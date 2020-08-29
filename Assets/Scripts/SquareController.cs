@@ -33,9 +33,12 @@ public class SquareController : MonoBehaviour
         sr.color = new Color(sr.color.r, sr.color.b, sr.color.g, 1.0f);
     }
 
-    void OnMouseDown()
+    void OnMouseUp()
     {
-        GameObject.Find("Board").GetComponent<BoardController>().ToggleSquares(_row, _col);
+        if (Input.touchCount < 2)
+        {
+            GameObject.Find("Board").GetComponent<BoardController>().ToggleSquares(_row, _col);
+        }
     }    
 
     void OnMouseOver()
