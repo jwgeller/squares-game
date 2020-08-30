@@ -35,10 +35,11 @@ public class SquareController : MonoBehaviour
 
     void OnMouseUp()
     {
-        if (Input.touchCount < 2)
+        if (Input.touchCount > 1)
         {
-            GameObject.Find("Board").GetComponent<BoardController>().ToggleSquares(_row, _col);
+            GameObject.Find("Board").GetComponent<BoardController>().SetSquareToggleEnabled(false);
         }
+        GameObject.Find("Board").GetComponent<BoardController>().ToggleSquares(_row, _col);
     }    
 
     void OnMouseOver()

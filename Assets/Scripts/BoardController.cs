@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class BoardController : MonoBehaviour
     public int _colCount = 8;
     public float _tileSize = 1.05f;
     public float _messageDuration = 0.5f;
+    public float _modeSwitchDuration = 0.2f;
     public GameObject _messagePanel;
     public GameObject _messageText;
 
@@ -18,6 +20,8 @@ public class BoardController : MonoBehaviour
     private int _moveCount = 0;
     private bool _showMessage = false;
     private float _showMessageDuration = 0.0f;
+    public float _modeSwitchCounter = 0.0f;
+    private bool _squareToggleEnabled = true;
 
     void Start()
     {
@@ -29,6 +33,17 @@ public class BoardController : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
         {
             _battleMode = _battleMode == 1 ? 0 : 1;
+            _squareToggleEnabled = false;
+        }
+
+        if (!_squareToggleEnabled)
+        {
+            _modeSwitchCounter += Time.deltaTime;
+            if (_modeSwitchCounter >= _modeSwitchDuration)
+            {
+                _squareToggleEnabled = true;
+                _modeSwitchCounter = 0.0f;
+            }
         }
 
         // TODO: break message handling out into separate controller
@@ -76,6 +91,11 @@ public class BoardController : MonoBehaviour
             {
                 square.GetComponent<SquareController>().ResetAlpha();
             }
+        }
+
+        if (!_squareToggleEnabled)
+        {
+            return;
         }
 
         switch (_battleMode)
@@ -176,5 +196,10 @@ public class BoardController : MonoBehaviour
             }            
         }
         _moveCount = 0;
+    }
+
+    public void SetSquareToggleEnabled(bool enabled)
+    {
+        _squareToggleEnabled = enabled;
     }
 }
